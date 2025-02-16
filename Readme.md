@@ -64,7 +64,7 @@ El siguiente link, muestra el Roadmap del proyecto:
 [Roadmap del proyecto](https://github.com/users/F3l1p3B0n1lla/projects/1/views/4)
 
 ## 🔲 Diagrama Entidad-Relacion
-"AQUI COLOCAREMOS EL LINK O LA IMAGEN DEL DIAGRAMA"
+<img src="Sprint2/Visualizaciones/Imagenes/DER.drawio.png"  height=300>
 
 ## 🛠️ Herramientas Tecnológicas Utilizadas
 * <span style="font-size: 20px;">GitHub</span> <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="25" /> <br>
