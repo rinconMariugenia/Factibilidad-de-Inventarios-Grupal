@@ -1,0 +1,676 @@
+## Proyecto Final
+
+import pandas as pd 
+import numpy as np
+import pyodbc
+import os
+
+## Convertir CSV a Parquet y Guardarlo
+
+## ETL archivo 2017PurchasePicesDec
+
+from google.cloud import storage
+
+import os
+from google.cloud import storage
+
+# Establecer la ruta correcta de las credenciales
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\\Proyecto Final Python\\arcane-geode-449913-m8-2f7230c7d0b6.json"
+
+# Probar la autenticación
+try:
+    client = storage.Client()
+    buckets = list(client.list_buckets())
+    print("✅ Autenticación exitosa. Buckets disponibles:", [bucket.name for bucket in buckets])
+except Exception as e:
+    print("❌ Error de autenticación:", e)
+
+def cargar_csv(ruta_csv):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df = pd.read_csv(ruta_csv)
+    print(f"Archivo cargado: {ruta_csv}")
+    return df
+
+def revisar_datos(df):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df.shape}")
+    print("\nValores faltantes por columna:\n", df.isnull().sum())
+    
+    duplicados = df.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+def limpiar_datos(df):
+    """Limpia los datos eliminando valores nulos y 'unknown' en Size y Volume."""
+    
+    # Eliminar filas con valores nulos
+    df = df.dropna()
+    
+    # Filtrar filas con "unknown" en Size o Volume
+    unknown_mask = df["Size"].str.contains("unknown", case=False, na=False) | \
+                   df["Volume"].astype(str).str.contains("unknown", case=False, na=False)
+    
+    df_clean = df[~unknown_mask]
+    
+    print(f"\nDatos después de limpieza: {df_clean.shape}")
+    return df_clean
+
+def renombrar_columnas(df):
+    """Renombra las columnas del DataFrame según un formato estándar."""
+    df.columns = [
+        "ProductoId", "NombreProducto","TipoLicor", "Precio", "Tamano", "Volumen",
+        "Clasificacion", "Costo", "ProveedorId", "NombreProveedor"
+    ]
+    print("\n📌 Columnas renombradas correctamente.")
+    return df
+
+def guardar_parquet(df, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv = r"C:\\Proyecto Final Henry\\DataBase\\2017PurchasePricesDec1.csv"
+ruta_parquet = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Productos.parquet"
+
+# 1️⃣ Cargar datos
+df = cargar_csv(ruta_csv)
+
+# 2️⃣ Revisar datos
+revisar_datos(df)
+
+# 3️⃣ Limpiar datos
+df = limpiar_datos(df)
+
+# 4️⃣ Renombrar columnas
+df = renombrar_columnas(df)
+
+# 5️⃣ Guardar en Parquet
+guardar_parquet(df, ruta_parquet)
+
+##Revision cambios a archivo parquet
+
+import pandas as pd
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\Productos.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\\Proyecto Final Python\\arcane-geode-449913-m8-2f7230c7d0b6.json"
+
+import os
+print(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+
+def subir_a_gcs(bucket_name, source_file_path, folder_name, destination_file_name):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path)
+
+    print(f"\n🚀 Archivo {source_file_path} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Productos.parquet"  # Archivo local
+destination_file_name = "Productos.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path, folder_name, destination_file_name)
+
+## ETL archivo BegInvFINAL12312026
+
+def cargar_csv(ruta_csv1):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df1 = pd.read_csv(ruta_csv1)
+    print(f"Archivo cargado: {ruta_csv1}")
+    return df1
+
+def revisar_datos(df1):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df1.shape}")
+    print("\nValores faltantes por columna:\n", df1.isnull().sum())
+    
+    duplicados = df1.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+def renombrar_columnas(df1):
+    """Renombra las columnas del DataFrame según un formato estándar."""
+    df1.columns = [
+        "InventarioInicialId", "Tienda", "Ciudad", "ProductoId", "NombreProducto",
+        "Tamano", "Cantidad", "Precio", "FechaInicio", "Costo"
+    ]
+    print("\n📌 Columnas renombradas correctamente.")
+    return df1  # ¡Asegúrate de devolver el DataFrame!
+
+def guardar_parquet(df1, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df1.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv1 = r"C:\\Proyecto Final Henry\\DataBase\\BegInvFINAL123120161.csv"
+ruta_parquet1 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioInicial.parquet"
+
+# 1️⃣ Cargar datos
+df1 = cargar_csv(ruta_csv1)
+
+# 2️⃣ Revisar datos
+revisar_datos(df1)
+
+# 3️⃣ Renombrar columnas
+df1 = renombrar_columnas(df1)
+
+# 4️⃣ Guardar en Parquet
+guardar_parquet(df1, ruta_parquet1)
+
+import pandas as pd
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioInicial.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+def subir_a_gcs(bucket_name, source_file_path1, folder_name, destination_file_name1):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name1}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path1)
+
+    print(f"\n🚀 Archivo {source_file_path1} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path1 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioInicial.parquet"  # Archivo local
+destination_file_name1 = "InventarioInicial.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path1, folder_name, destination_file_name1)
+
+## ETL archivo EndInvFINAL12312026
+
+def cargar_csv(ruta_csv3):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df3 = pd.read_csv(ruta_csv3)
+    print(f"✅ Archivo cargado: {ruta_csv3}")
+    return df3
+
+def revisar_datos(df3):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df3.shape}")
+    print("\nValores faltantes por columna:\n", df3.isnull().sum())
+    
+    duplicados = df3.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+def replace_nan_city(df3, store_number, city_name):
+    """Reemplaza los valores NaN en 'City' con el nombre de la ciudad si Store es el especificado."""
+    df3.loc[(df3['Store'] == store_number) & (df3['City'].isna()), 'City'] = city_name
+    return df3
+
+def limpiar_datos(df3):
+    """Limpia los datos eliminando valores nulos y reemplazando valores faltantes en City."""
+    df3 = replace_nan_city(df3, 46, "TYWARDREATH")  # ✅ Corrige valores de City
+    return df3
+
+def renombrar_columnas(df3):
+    """Renombra las columnas en el orden especificado."""
+    columnas_originales = df3.columns.tolist()
+    
+    nombres_nuevos = [
+        "InventarioFinalId", "Tienda", "Ciudad", "ProductoId", "NombreProducto",
+        "Tamano", "Cantidad", "Precio", "FechaFin", "Costo"
+    ]
+    
+    # Si el número de columnas no coincide, se evita el error
+    if len(columnas_originales) != len(nombres_nuevos):
+        print("⚠️ Advertencia: La cantidad de columnas no coincide con los nombres nuevos.")
+        print(f"Columnas originales: {columnas_originales}")
+        return df3  # Retorna sin cambios
+
+    df3.columns = nombres_nuevos  # ✅ Se renombraron las columnas correctamente
+    print("\n📌 Columnas renombradas correctamente.")
+    return df3
+
+def guardar_parquet(df3, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df3.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv3 = r"C:\\Proyecto Final Henry\\DataBase\\EndInvFINAL123120161.csv"
+ruta_parquet3 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioFinal.parquet"
+
+# 1️⃣ Cargar datos
+df3 = cargar_csv(ruta_csv3)
+
+# 2️⃣ Revisar datos
+revisar_datos(df3)
+
+# 3️⃣ Limpiar datos
+df3 = limpiar_datos(df3)  # ✅ Se asegura de que df3 no sea None
+
+# 4️⃣ Renombrar columnas antes de guardar
+df3 = renombrar_columnas(df3)
+
+# 5️⃣ Guardar en Parquet
+guardar_parquet(df3, ruta_parquet3)  # ✅ Ahora df3 es válido y no dará error
+
+import pandas as pd
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioFinal.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+def subir_a_gcs(bucket_name, source_file_path3, folder_name, destination_file_name3):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name3}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path3)
+
+    print(f"\n🚀 Archivo {source_file_path3} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path3 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\InventarioFinal.parquet"  # Archivo local
+destination_file_name3 = "InventarioFinal.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path3, folder_name, destination_file_name3)
+
+## ETL archivo InvoicePurchases12312016
+
+def cargar_csv(ruta_csv4):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df4 = pd.read_csv(ruta_csv4)
+    print(f"✅ Archivo cargado: {ruta_csv4}")
+    return df4
+
+def revisar_datos(df4):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df4.shape}")
+    print("\nValores faltantes por columna:\n", df4.isnull().sum())
+    
+    duplicados = df4.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+    # Mostrar valores únicos en la columna 'Approval' si existe
+    if "Approval" in df4.columns:
+        unique_values = df4["Approval"].unique()
+        print("\n📌 Valores únicos en la columna 'Approval':")
+        print(unique_values)
+
+def limpiar_datos(df4):
+    """Limpia los datos eliminando valores nulos y la columna Approval."""
+    # Eliminar la columna 'Approval' si existe
+    if "Approval" in df4.columns:
+        df4 = df4.drop(columns=["Approval"])
+        print("\n🚮 Columna 'Approval' eliminada.")
+
+    # Eliminar filas con valores nulos
+    df4 = df4.dropna()
+    
+    print("\n✅ Datos limpiados correctamente.")
+    return df4  # Asegurar que devuelve el DataFrame limpio
+
+def renombrar_columnas(df4):
+    """Renombra las columnas del DataFrame según un formato estándar."""
+    df4.columns = [
+        "ProveedorId", "NombreProveedor", "FechaFactura", "CompraId", 
+        "FechaCompra", "FechaPago", "Cantidad", "CostoTotal", "CostoEnvio"
+    ]
+    print("\n📌 Columnas renombradas correctamente.")
+    return df4  # Asegurar que devuelve el DataFrame actualizado
+
+def guardar_parquet(df4, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df4.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv4 = r"C:\\Proyecto Final Henry\\DataBase\\InvoicePurchases12312016.csv"
+ruta_parquet4 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Compras.parquet"
+
+# 1️⃣ Cargar datos
+df4 = cargar_csv(ruta_csv4)
+
+# 2️⃣ Revisar datos
+revisar_datos(df4)
+
+# 3️⃣ Limpiar datos
+df4 = limpiar_datos(df4)
+
+# 4️⃣ Renombrar columnas
+df4 = renombrar_columnas(df4)
+
+# 5️⃣ Guardar en Parquet
+guardar_parquet(df4, ruta_parquet4)
+
+
+import pandas as pd
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\Compras.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+def subir_a_gcs(bucket_name, source_file_path4, folder_name, destination_file_name4):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name4}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path4)
+
+    print(f"\n🚀 Archivo {source_file_path4} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path4 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Compras.parquet"  # Archivo local
+destination_file_name4 = "Compras.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path4, folder_name, destination_file_name4)
+
+## ETL archivo PurchasesFINAL12312016
+
+def cargar_csv(ruta_csv5):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df5 = pd.read_csv(ruta_csv5)
+    print(f"✅ Archivo cargado: {ruta_csv5}")
+    return df5
+
+def revisar_datos(df5):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df5.shape}")
+    print("\nValores faltantes por columna:\n", df5.isnull().sum())
+    
+    duplicados = df5.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+def limpiar_datos(df5):
+    """Elimina valores nulos en la columna 'Tamano' y filas duplicadas sin afectar el conteo final esperado."""
+    # Verificar si la columna "Tamano" existe y corregir posibles errores en el nombre
+    col_tamano = "Tamano" if "Tamano" in df5.columns else "Size" if "Size" in df5.columns else None
+
+    if col_tamano:
+        filas_size_nulas = df5[col_tamano].isnull().sum()
+        df5 = df5.dropna(subset=[col_tamano])
+        print(f"\n🚮 {filas_size_nulas} filas con valores NaN en '{col_tamano}' eliminadas.")
+
+    print("\n✅ Datos limpiados correctamente.")
+    return df5  
+
+def renombrar_columnas(df):
+    """Renombra las columnas del DataFrame según un formato estándar."""
+    df5.columns = [
+        "InventarioIncialId", "Tienda", "ProductoId", "NombreProducto", "Tamano",
+        "ProveedorId", "NombreProveedor", "CompraId", "FechaCompra", "FechaIngreso",
+        "FechaFactura", "FechaPago", "CostoUnitario", "Cantidad", "CostoTotal", "Clasificacion"
+    ]
+    print("\n📌 Columnas renombradas correctamente.")
+    return df5  
+
+def guardar_parquet(df5, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df5.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv5 = r"C:\\Proyecto Final Henry\\DataBase\\PurchasesFINAL12312016.csv"
+ruta_parquet5 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\DetalleCompra.parquet"
+
+# 1️⃣ Cargar datos
+df5 = cargar_csv(ruta_csv5)
+
+# 2️⃣ Revisar datos
+revisar_datos(df5)
+
+# 3️⃣ Limpiar datos (solo eliminamos valores nulos en 'Tamano')
+df5 = limpiar_datos(df5)
+
+# 4️⃣ Renombrar columnas
+df5 = renombrar_columnas(df5)
+
+# 5️⃣ Verificar el número de filas después de la limpieza
+print(f"\n🔎 Filas finales esperadas: 2,372,471")
+print(f"🔎 Filas actuales después de limpieza: {df5.shape[0]}")
+
+# 6️⃣ Guardar en Parquet
+guardar_parquet(df5, ruta_parquet5)
+
+
+import pandas as pd
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\DetalleCompra.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+def subir_a_gcs(bucket_name, source_file_path5, folder_name, destination_file_name5):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name5}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path5)
+
+    print(f"\n🚀 Archivo {source_file_path5} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path5 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\DetalleCompra.parquet"  # Archivo local
+destination_file_name5 = "DetalleCompra.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path5, folder_name, destination_file_name5)
+
+## ETL archivo SalesFINAL12312016
+
+def cargar_csv(ruta_csv6):
+    """Carga un archivo CSV en un DataFrame de Pandas."""
+    df6 = pd.read_csv(ruta_csv6)
+    print(f"✅ Archivo cargado: {ruta_csv6}")
+    return df6
+
+def revisar_datos(df6):
+    """Revisa el total de filas y columnas, valores faltantes y duplicados."""
+    print("\n🔍 Revisión inicial de los datos:")
+    print(f"Forma del DataFrame (filas, columnas): {df6.shape}")
+    print("\nValores faltantes por columna:\n", df6.isnull().sum())
+
+    duplicados = df6.duplicated().sum()
+    print(f"\nTotal de filas duplicadas: {duplicados}")
+
+def limpiar_datos(df6):
+    """Elimina valores nulos y filas duplicadas para limpiar la base de datos."""
+    # Eliminar filas con valores nulos
+    filas_nulas_totales = df6.isnull().any(axis=1).sum()
+    df6 = df6.dropna()
+    print(f"\n🚮 {filas_nulas_totales} filas con valores nulos eliminadas.")
+
+    # Eliminar duplicados
+    filas_duplicadas = df6.duplicated().sum()
+    df6 = df6.drop_duplicates()
+    print(f"\n🚮 {filas_duplicadas} filas duplicadas eliminadas.")
+
+    print("\n✅ Datos limpiados correctamente.")
+    return df6  
+
+def renombrar_columnas(df6):
+    """Renombra las columnas del DataFrame según un formato estándar."""
+    df6.columns = [
+        "InventarioInicialId", "Tienda", "ProductoId", "NombreProducto", "Tamano",
+        "CantidadVendida", "TotalVenta", "PrecioUnitario", "FechaVenta", "Volumen",
+        "Clasificacion", "Impuestos", "ProveedorId", "NombreProveedor", "Costo"
+    ]
+    print("\n📌 Columnas renombradas correctamente.")
+    return df6  
+
+def guardar_parquet(df6, output_path):
+    """Guarda el DataFrame en formato Parquet con compresión Snappy."""
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df6.to_parquet(output_path, engine="pyarrow", compression="snappy")
+    print(f"\n✅ Archivo guardado en Parquet: {output_path}")
+
+
+# ------------------ 🔹 EJECUCIÓN DEL PROCESO ETL 🔹 ------------------
+ruta_csv6 = r"C:\\Proyecto Final Henry\\DataBase\\SalesFINAL123120161.csv"
+ruta_parquet6 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Ventas.parquet"
+
+# 1️⃣ Cargar datos
+df6 = cargar_csv(ruta_csv6)
+
+# 2️⃣ Revisar datos
+revisar_datos(df6)
+
+# 3️⃣ Limpiar datos
+df6 = limpiar_datos(df6)
+
+# 4️⃣ Renombrar columnas
+df6 = renombrar_columnas(df6)
+
+# 5️⃣ Verificar el número de filas después de la limpieza
+print(f"\n🔎 Filas finales después de limpieza: {df6.shape[0]}")
+
+# 6️⃣ Guardar en Parquet
+guardar_parquet(df6, ruta_parquet6)
+
+
+# Cargar un archivo Parquet
+df = pd.read_parquet("C:\\Proyecto Final Henry\\DataBase\\processed\\Ventas.parquet")
+
+# Mostrar las primeras filas
+print(df.head())
+
+print(df.columns)
+
+### Subir archivo al bucket a la carpeta Datos Limpios
+
+
+def subir_a_gcs(bucket_name, source_file_path6, folder_name, destination_file_name6):
+    """Sube un archivo a una carpeta específica dentro de un bucket en Google Cloud Storage."""
+    
+    # Inicializar el cliente de GCS
+    storage_client = storage.Client()
+    
+    # Obtener el bucket
+    bucket = storage_client.bucket(bucket_name)
+    
+    # Definir la ruta completa en el bucket (carpeta + nombre de archivo)
+    destination_blob_name = f"{folder_name}/{destination_file_name6}".strip("/")
+    
+    # Crear un blob (objeto en el bucket)
+    blob = bucket.blob(destination_blob_name)
+    
+    # Subir el archivo
+    blob.upload_from_filename(source_file_path6)
+
+    print(f"\n🚀 Archivo {source_file_path6} subido a gs://{bucket_name}/{destination_blob_name}")
+
+# Datos específicos de tu bucket y archivo
+bucket_name = "licoreradatos"  # Tu bucket en GCS
+folder_name = "Datos Limpios"  # Carpeta dentro del bucket
+source_file_path6 = r"C:\\Proyecto Final Henry\\DataBase\\processed\\Ventas.parquet"  # Archivo local
+destination_file_name6 = "Ventas.parquet"  # Nombre final en el bucket
+
+# Subir archivo a GCS
+subir_a_gcs(bucket_name, source_file_path6, folder_name, destination_file_name6)
