@@ -14,7 +14,7 @@
     Inventario final = Inventario inicial mes + Compras mes - Ventas mes 
 
 
-## 1. Optimización del Inventario:
+## 2. Optimización del Inventario:
 Aplicar el Análisis ABC de manera activa para priorizar los productos de alta rotación (A), asegurando su disponibilidad permanente.
 Reducir el stock de los productos C que tengan baja demanda y márgenes reducidos. Evaluar la posibilidad de liquidarlos, descontinuarlos o rotarlos mediante promociones.
 Establecer políticas de inventario diferenciadas:
@@ -22,21 +22,21 @@ A → Revisión diaria / semanal y reposición rápida.
 B → Revisión mensual y niveles de stock intermedios.
 C → Revisión trimestral y stock mínimo.
 
-## 2. Revisión del Portafolio de Productos:
+## 3. Revisión del Portafolio de Productos:
 Analizar si es necesario ampliar o reducir ciertas categorías para equilibrar mejor la oferta y evitar sobreconcentración en algunas líneas.
 Identificar tendencias de mercado y evaluar la incorporación de nuevos productos que puedan convertirse en "A" en el futuro.
 
-## 3. Ajuste de Puntos de Reorden:
+## 4. Ajuste de Puntos de Reorden:
 Revisar los niveles de reorden según el comportamiento de cada producto:
 Productos A → Reorden alto para evitar quiebres de stock.
 Productos C → Reorden bajo o incluso reposición bajo pedido.
 Implementar sistemas de alerta para prevenir rupturas de inventario, especialmente en productos críticos.
 
-##  4. Negociación con Proveedores:
+## 5. Negociación con Proveedores:
 Negociar condiciones especiales para los productos A debido a su alta demanda (mejores precios, plazos de entrega rápidos).
 Buscar alternativas de proveedores para reducir el costo y mejorar la flexibilidad de abastecimiento en productos B y C.
 
-## 5. Análisis Continuo y Automatización:
+## 6. Análisis Continuo y Automatización:
 Implementar revisiones trimestrales del inventario usando el Análisis ABC y de Reorden para adaptarse a cambios en la demanda.
 Considerar la automatización del monitoreo de inventario mediante herramientas que permitan:
 Alertas automáticas de puntos de reorden.
