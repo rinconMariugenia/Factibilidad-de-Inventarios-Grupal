@@ -1,0 +1,20 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <line x1="50" y1="350" x2="50" y2="50" stroke="green" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+  <text x="35" y="25" font-family="Arial" font-size="14" fill="green" text-anchor="start">Alta F</text>
+  <text x="25" y="200" font-family="Arial" font-size="16" fill="green" transform="rotate(-90 25 200)" text-anchor="middle">FUERZA</text>
+
+  <line x1="50" y1="350" x2="350" y2="350" stroke="red" stroke-width="2" marker-end="url(#arrowheadRed)"/>
+  <text x="375" y="375" font-family="Arial" font-size="14" fill="red" text-anchor="end">Alta P</text> <text x="200" y="335" font-family="Arial" font-size="16" fill="red" text-anchor="middle">PRENSION</text>
+
+  <circle cx="50" cy="350" r="3" fill="black"/>
+  <text x="40" y="365" font-family="Arial" font-size="12" fill="black">0</text>
+
+  <defs>
+    <marker id="arrowheadGreen" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="green"/>
+    </marker>
+    <marker id="arrowheadRed" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="red"/>
+    </marker>
+  </defs>
+</svg>
