@@ -1,0 +1,94 @@
+<svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Degradado de fondo celeste -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#b3e5fc;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#81d4fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4fc3f7;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Degradado para trofeo dorado -->
+    <linearGradient id="goldTrophy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffed4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Degradado para trofeo plateado -->
+    <linearGradient id="silverTrophy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e0e0e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bdbdbd;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Degradado para trofeo bronce -->
+    <linearGradient id="bronzeTrophy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4a460;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e39556;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cd7f32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo con esquinas redondeadas -->
+  <rect width="500" height="400" rx="30" fill="url(#bgGradient)"/>
+  
+  <!-- Sombra del podio -->
+  <ellipse cx="250" cy="370" rx="200" ry="15" fill="#000" opacity="0.1"/>
+  
+  <!-- Podio 2° lugar (izquierda) -->
+  <rect x="100" y="250" width="100" height="120" fill="#7e7e7e" rx="5"/>
+  <text x="150" y="320" font-size="60" font-weight="bold" fill="white" text-anchor="middle">2</text>
+  
+  <!-- Podio 1° lugar (centro) -->
+  <rect x="200" y="200" width="100" height="170" fill="#8e8e8e" rx="5"/>
+  <text x="250" y="300" font-size="70" font-weight="bold" fill="white" text-anchor="middle">1</text>
+  
+  <!-- Podio 3° lugar (derecha) -->
+  <rect x="300" y="270" width="100" height="100" fill="#6e6e6e" rx="5"/>
+  <text x="350" y="330" font-size="55" font-weight="bold" fill="white" text-anchor="middle">3</text>
+  
+  <!-- Trofeo Plateado (2° lugar) -->
+  <g transform="translate(150, 190)">
+    <!-- Base -->
+    <rect x="-20" y="50" width="40" height="8" fill="url(#silverTrophy)" rx="2"/>
+    <!-- Columna -->
+    <rect x="-6" y="30" width="12" height="20" fill="url(#silverTrophy)" rx="1"/>
+    <!-- Copa -->
+    <path d="M -18 10 Q -18 0 -12 0 L 12 0 Q 18 0 18 10 L 15 28 Q 15 32 0 32 Q -15 32 -15 28 Z" fill="url(#silverTrophy)"/>
+    <!-- Asas -->
+    <path d="M -18 5 Q -25 5 -25 12 Q -25 18 -18 18" stroke="url(#silverTrophy)" stroke-width="3" fill="none"/>
+    <path d="M 18 5 Q 25 5 25 12 Q 25 18 18 18" stroke="url(#silverTrophy)" stroke-width="3" fill="none"/>
+    <!-- Brillo -->
+    <ellipse cx="-5" cy="12" rx="6" ry="10" fill="white" opacity="0.3"/>
+  </g>
+  
+  <!-- Trofeo Dorado (1° lugar) -->
+  <g transform="translate(250, 130)">
+    <!-- Base -->
+    <rect x="-25" y="60" width="50" height="10" fill="url(#goldTrophy)" rx="2"/>
+    <!-- Columna -->
+    <rect x="-8" y="35" width="16" height="25" fill="url(#goldTrophy)" rx="1"/>
+    <!-- Copa -->
+    <path d="M -22 12 Q -22 0 -15 0 L 15 0 Q 22 0 22 12 L 18 35 Q 18 40 0 40 Q -18 40 -18 35 Z" fill="url(#goldTrophy)"/>
+    <!-- Asas -->
+    <path d="M -22 8 Q -30 8 -30 16 Q -30 23 -22 23" stroke="url(#goldTrophy)" stroke-width="4" fill="none"/>
+    <path d="M 22 8 Q 30 8 30 16 Q 30 23 22 23" stroke="url(#goldTrophy)" stroke-width="4" fill="none"/>
+    <!-- Brillo -->
+    <ellipse cx="-6" cy="15" rx="7" ry="12" fill="white" opacity="0.4"/>
+  </g>
+  
+  <!-- Trofeo Bronce (3° lugar) -->
+  <g transform="translate(350, 215)">
+    <!-- Base -->
+    <rect x="-18" y="48" width="36" height="7" fill="url(#bronzeTrophy)" rx="2"/>
+    <!-- Columna -->
+    <rect x="-5" y="28" width="10" height="20" fill="url(#bronzeTrophy)" rx="1"/>
+    <!-- Copa -->
+    <path d="M -16 8 Q -16 0 -10 0 L 10 0 Q 16 0 16 8 L 13 26 Q 13 30 0 30 Q -13 30 -13 26 Z" fill="url(#bronzeTrophy)"/>
+    <!-- Asas -->
+    <path d="M -16 4 Q -22 4 -22 10 Q -22 16 -16 16" stroke="url(#bronzeTrophy)" stroke-width="3" fill="none"/>
+    <path d="M 16 4 Q 22 4 22 10 Q 22 16 16 16" stroke="url(#bronzeTrophy)" stroke-width="3" fill="none"/>
+    <!-- Brillo -->
+    <ellipse cx="-4" cy="10" rx="5" ry="9" fill="white" opacity="0.3"/>
+  </g>
+</svg>
