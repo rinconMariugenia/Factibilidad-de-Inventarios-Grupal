@@ -41,7 +41,7 @@
   
   <!-- Segundo lugar (Plata) -->
   <rect x="250" y="230" width="60" height="70" fill="#37474f" rx="4"/>
-  <text x="280" y="350" font-size="22" font-weight="bold" fill="white" text-anchor="middle">2</text>
+  <text x="280" y="300" font-size="22" font-weight="bold" fill="white" text-anchor="middle">2</text>
   <rect x="260" y="180" width="40" height="90" fill="#DCDCDC" rx="4"/>
   
   <!-- Efectos de brillo en las barras -->
