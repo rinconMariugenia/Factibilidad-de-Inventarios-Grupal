@@ -31,7 +31,7 @@
   
   <!-- Tercer lugar (Bronce) -->
   <rect x="90" y="250" width="60" height="50" fill="#37474f" rx="4"/>
-  <text x="120" y="280" font-size="20" font-weight="bold" fill="white" text-anchor="middle">3</text>
+  <text x="120" y="320" font-size="20" font-weight="bold" fill="white" text-anchor="middle">3</text>
   <rect x="100" y="210" width="40" height="80" fill="#FF7D29" rx="4"/>
   
   <!-- Primer lugar (Oro) - El más alto -->
