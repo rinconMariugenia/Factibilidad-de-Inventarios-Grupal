@@ -34,8 +34,8 @@
   <text x="120" y="280" font-size="20" font-weight="bold" fill="white" text-anchor="middle">3</text>
   <rect x="100" y="210" width="40" height="80" fill="url(#greenGradient)" rx="4"/>
   
-  <!-- Primer lugar (Rojo) - El más alto -->
-  <rect x="170" y="200" width="60" height="100" fill="#455a64" rx="4"/>
+  <!-- Primer lugar (Oro) - El más alto -->
+  <rect x="170" y="200" width="60" height="100" fill="#FFD93D" rx="4"/>
   <text x="200" y="260" font-size="24" font-weight="bold" fill="white" text-anchor="middle">1</text>
   <rect x="180" y="140" width="40" height="100" fill="url(#redGradient)" rx="4"/>
   
