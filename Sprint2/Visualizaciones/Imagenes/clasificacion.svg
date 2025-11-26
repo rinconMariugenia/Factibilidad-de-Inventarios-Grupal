@@ -42,7 +42,7 @@
   <!-- Segundo lugar (Amarillo) -->
   <rect x="250" y="230" width="60" height="70" fill="#37474f" rx="4"/>
   <text x="280" y="270" font-size="22" font-weight="bold" fill="white" text-anchor="middle">2</text>
-  <rect x="260" y="180" width="40" height="90" fill="url(#yellowGradient)" rx="4"/>
+  <rect x="260" y="180" width="40" height="90" fill="#DCDCDC" rx="4"/>
   
   <!-- Efectos de brillo en las barras -->
   <rect x="180" y="140" width="15" height="100" fill="white" opacity="0.2" rx="4"/>
