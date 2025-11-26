@@ -29,20 +29,20 @@
   <!-- Podio - Base -->
   <rect x="80" y="300" width="240" height="20" fill="#1f2136ff" opacity="0.8" rx="4"/>
   
-  <!-- Tercer lugar (Verde) -->
+  <!-- Segundo lugar (Verde) -->
   <rect x="90" y="250" width="60" height="50" fill="#37474f" rx="4"/>
   <text x="120" y="280" font-size="20" font-weight="bold" fill="white" text-anchor="middle">3</text>
-  <rect x="100" y="210" width="40" height="80" fill="url(#greenGradient)" rx="4"/>
+  <rect x="100" y="210" width="40" height="80" fill="#DCDCDC" rx="4"/>
   
   <!-- Primer lugar (Rojo) - El más alto -->
   <rect x="170" y="200" width="60" height="100" fill="#37474f" rx="4"/>
   <text x="200" y="260" font-size="24" font-weight="bold" fill="white" text-anchor="middle">1</text>
   <rect x="180" y="140" width="40" height="100" fill="url(#redGradient)" rx="4"/>
   
-  <!-- Segundo lugar (Amarillo) -->
+  <!-- Tercer lugar (Amarillo) -->
   <rect x="250" y="230" width="60" height="70" fill="#37474f" rx="4"/>
   <text x="280" y="270" font-size="22" font-weight="bold" fill="white" text-anchor="middle">2</text>
-  <rect x="260" y="180" width="40" height="90" fill="#DCDCDC" rx="4"/>
+  <rect x="260" y="180" width="40" height="90" fill="#FF7D29" rx="4"/>
   
   <!-- Efectos de brillo en las barras -->
   <rect x="180" y="140" width="15" height="100" fill="white" opacity="0.2" rx="4"/>
